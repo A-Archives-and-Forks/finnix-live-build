@@ -284,11 +284,25 @@ fi
 if [ -n "${GITHUB_RUN_ID}" ]; then
     BUILD_TAGS="${BUILD_TAGS} env:gha"
 fi
+if [ -n "${CI_SYSTEM_NAME}" ]; then
+    # Woodpecker CI, etc
+    BUILD_TAGS="${BUILD_TAGS} env:${CI_SYSTEM_NAME}"
+fi
+if [ -n "${CI_WORKFLOW_NAME}" ]; then
+    # Woodpecker CI, etc
+    BUILD_TAGS="${BUILD_TAGS} workflow:${CI_WORKFLOW_NAME}"
+fi
 
 BUILD_TAGS="$(for i in ${BUILD_TAGS}; do echo "${i}"; done | sort | uniq | xargs)"
 
-if [ -z "${BUILD_URL}" ] && [ -n "${GITHUB_RUN_ID}" ]; then
-    BUILD_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+if [ -z "${BUILD_URL}" ]; then
+    if [ -n "${GITHUB_RUN_ID}" ]; then
+        # GitHub
+        BUILD_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+    elif [ -n "${CI_PIPELINE_URL}" ]; then
+        # Woodpecker CI, GitLab, etc
+        BUILD_URL="${CI_PIPELINE_URL}"
+    fi
 fi
 
 mkdir -p "${LOCK_DIR}"
