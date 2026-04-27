@@ -1,0 +1,51 @@
+# SPDX-PackageName: finnix-live-build
+# SPDX-PackageSupplier: Ryan Finnie <ryan@finnie.org>
+# SPDX-PackageDownloadLocation: https://codeberg.org/finnix/finnix-live-build
+# SPDX-FileComment: Woodpecker CI ci workflow
+# SPDX-FileCopyrightText: © 2026 Ryan Finnie <ryan@finnie.org>
+# SPDX-License-Identifier: MPL-2.0
+---
+when:
+  - event: ["push", "pull_request", "manual"]
+matrix:
+  include:
+    - ARCH: "amd64"
+      PLATFORM: "linux/amd64"
+    - ARCH: "arm64"
+      PLATFORM: "linux/arm64"
+labels:
+  platform: "${PLATFORM}"
+steps:
+  - name: "Docker CI build (${ARCH})"
+    image: "debian"
+    commands: |
+      apt update
+      apt -y install git docker-cli docker-buildx
+
+      IMAGE_NAME="$(echo "$${CI_REPO}" | tr '[:upper:]' '[:lower:]')"
+      IMAGE_TAG="$${CI_WORKFLOW_NAME}-$${ARCH}"
+      IMAGE_ID="build/$${IMAGE_NAME}:$${IMAGE_TAG}"
+      docker image build -t "$${IMAGE_ID}" \
+          --build-arg BUILD_TAGS="env:docker" \
+          --build-arg CI_SYSTEM_NAME \
+          --build-arg CI_WORKFLOW_NAME \
+          --build-arg CI_PIPELINE_URL \
+          .
+      docker image history "$${IMAGE_ID}"
+      docker image inspect "$${IMAGE_ID}"
+      IMAGE_DIGEST="sha256:$(docker buildx imagetools inspect "$${IMAGE_ID}" --raw | sha256sum | awk '{print $1}')"
+      echo "Digest: $${IMAGE_DIGEST}"
+  - name: "Notify Mastodon if failure"
+    when:
+      - status: ["failure"]
+    image: "woodpeckerci/plugin-mastodon-post"
+    settings:
+      server_url: "https://m29.us"
+      access_token:
+        from_secret: "m29_token"
+      status: |
+        🪿 🪿 🪿 FAILURE: {{ CI_REPO }} 🪿 🪿 🪿
+        Workflow: {{ CI_WORKFLOW_NAME }} ({{ CI_PIPELINE_EVENT }} on {{ CI_COMMIT_REF }})
+
+        Pipeline: {{ CI_PIPELINE_URL }}
+        Commit: {{ CI_PIPELINE_FORGE_URL }}
