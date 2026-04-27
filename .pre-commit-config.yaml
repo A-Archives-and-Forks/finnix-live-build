@@ -53,15 +53,15 @@ repos:
     hooks:
       - id: "reuse-lint-file"
 
-  - repo: "https://github.com/koalaman/shellcheck-precommit"
-    rev: "v0.11.0"
+  - repo: "local"
     hooks:
       - id: "shellcheck"
-
-  - repo: "https://github.com/scop/pre-commit-shfmt"
-    rev: "v3.12.0-2"
-    hooks:
-      - id: "shfmt-docker"
-        args:
-          - "-i"
-          - "4"
+        name: "ShellCheck"
+        entry: "shellcheck"
+        language: "system"
+        types: ["shell"]
+      - id: "shfmt"
+        name: "shfmt Shell Formatter"
+        entry: "shfmt --diff -i 4"
+        language: "system"
+        types: ["shell"]
