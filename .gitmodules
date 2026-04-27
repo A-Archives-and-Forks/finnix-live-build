@@ -6,5 +6,5 @@
 
 [submodule "live-build"]
 	path = live-build
-	url = https://github.com/finnix/live-build.git
+	url = https://codeberg.org/finnix/live-build.git
 	branch = main
