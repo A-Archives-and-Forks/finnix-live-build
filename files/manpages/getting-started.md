@@ -43,8 +43,8 @@ need more working disk space, run:
 
 {% if PRODUCT_ID == 'finnix' %}# DOCUMENTATION
 
-More Finnix documentation is available at [the finnix-docs repository on
-GitHub](https://github.com/finnix/finnix-docs).{% endif %}
+More Finnix documentation is available at [the finnix-docs
+repository](https://codeberg.org/finnix/finnix-docs).{% endif %}
 
 # LICENSE
 

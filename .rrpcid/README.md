@@ -11,6 +11,6 @@ This document is provided under the following license:
 
     SPDX-PackageName: finnix-live-build
     SPDX-PackageSupplier: Ryan Finnie <ryan@finnie.org>
-    SPDX-PackageDownloadLocation: https://github.com/rfinnie/finnix-live-build
+    SPDX-PackageDownloadLocation: https://codeberg.org/finnix/finnix-live-build
     SPDX-FileCopyrightText: © 2021 Ryan Finnie <ryan@finnie.org>
     SPDX-License-Identifier: CC-BY-SA-4.0
