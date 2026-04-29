@@ -32,7 +32,7 @@ def numfmt(
     limit: Stop after a specified number of rollovers
     prefixes: List of (decimal, binary) prefix strings, ascending
     """
-    # SPDX-SnippetComment: Originally from https://github.com/rfinnie/rf-pymods
+    # SPDX-SnippetComment: Originally from https://codeberg.org/rfinnie/rf-pymods
     # SPDX-SnippetCopyrightText: Copyright (C) 2020-2025 Ryan Finnie
     # SPDX-LicenseInfoInSnippet: MIT
 
