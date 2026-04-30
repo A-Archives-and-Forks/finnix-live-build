@@ -15,6 +15,12 @@ matrix:
       PLATFORM: "linux/arm64"
 labels:
   platform: "${PLATFORM}"
+clone:
+  git:
+    image: "woodpeckerci/plugin-git"
+    settings:
+      # finnix-live-build can use tags to make more descriptive dev IDs
+      tags: true
 steps:
   - name: "CI build (${ARCH})"
     image: "debian"
