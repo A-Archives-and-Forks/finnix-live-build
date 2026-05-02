@@ -6,7 +6,8 @@
 # SPDX-License-Identifier: MPL-2.0
 ---
 when:
-  - event: ["push", "pull_request", "manual"]
+  - event: ["push", "pull_request", "manual", "cron"]
+    cron: "weekly"
 matrix:
   include:
     - ARCH: "amd64"
